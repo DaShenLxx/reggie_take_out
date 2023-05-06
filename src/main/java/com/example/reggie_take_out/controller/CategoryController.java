@@ -103,7 +103,11 @@ public class CategoryController {
         }
     }
 
-//    新增菜品时，查询所有分类
+    /**
+     * 新增菜品时，查询所有分类
+     * @param type
+     * @return
+     */
     @GetMapping("/list")
     public R listCategory(Integer type) {
         log.info("查询所有分类");
