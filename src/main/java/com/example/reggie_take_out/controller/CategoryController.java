@@ -16,6 +16,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 菜品及套餐分类(Category)表控制层
@@ -102,21 +103,20 @@ public class CategoryController {
             return R.error("服务器异常");
         }
     }
-
     /**
      * 新增菜品时，查询所有分类
      * @param type
      * @return
      */
     @GetMapping("/list")
-    public R listCategory(Integer type) {
+    public R<List<Category>> listCategory(Category category) {
         log.info("查询所有分类");
         LambdaQueryWrapper<Category> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(Category::getType,type);
-        wrapper.orderByAsc(Category::getSort);
+        wrapper.eq(category.getType()!=null,Category::getType,category.getType());
+        wrapper.orderByAsc(Category::getSort)
+                .orderByDesc(Category::getUpdateTime);
         return R.success(this.categoryService.list(wrapper));
     }
-
 
 }
 

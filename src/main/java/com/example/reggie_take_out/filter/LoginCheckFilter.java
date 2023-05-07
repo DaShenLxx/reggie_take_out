@@ -26,7 +26,7 @@ public class LoginCheckFilter implements Filter {
 //        获取本次请求的URI
         String requestURI = request.getRequestURI();
 //        如果是登录请求，直接放行
-        if (requestURI.contains("/login") || requestURI.contains("/logout") || requestURI.contains("/front") || requestURI.contains("/backend") || requestURI.contains("/images")){
+        if (requestURI.contains("/login") || requestURI.contains("/logout") || requestURI.contains("/front") || requestURI.contains("/backend") || requestURI.contains("/common")){
             filterChain.doFilter(request,response);
             return;
         }
