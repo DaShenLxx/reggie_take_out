@@ -66,11 +66,9 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 //            获取类别名称
             Category category = categoryService.getById(dish.getCategoryId());
             dishDto.setCategoryName(category.getName());
-            System.out.println(dishDto);
             dishDtoList.add(dishDto);
         });
-        BeanUtils.copyProperties(dishPage, dishDtoPage);
-        dishDtoPage.setRecords(null);
+        BeanUtils.copyProperties(dishPage, dishDtoPage,"records");
         dishDtoPage.setRecords(dishDtoList);
         return R.success(dishDtoPage);
     }
@@ -144,6 +142,29 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         });
         // 批量更新
         dishFlavorService.saveBatch(flavors);
+    }
+
+    /**
+     * 修改菜品状态(可批量修改)
+     * @param id
+     * @param status
+     * @return
+     */
+    @Override
+    public R<String> updateDishStatus(List<Long> id, Integer status) {
+        LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Dish::getId,id);
+        Dish dish = new Dish();
+//       如果status为0，表示禁售请求，将status设置为0
+        if (status == 0){
+            dish.setStatus(0);
+            this.update(dish,wrapper);
+            return R.success(null);
+        }
+//        如果status为1，表示上架请求，将status设置为1
+        dish.setStatus(1);
+        this.update(dish,wrapper);
+        return R.success("修改状态成功");
     }
 }
 

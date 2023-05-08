@@ -31,6 +31,7 @@ public class Dish implements Serializable {
     /**
      * 菜品分类id
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long categoryId;
 
     /**

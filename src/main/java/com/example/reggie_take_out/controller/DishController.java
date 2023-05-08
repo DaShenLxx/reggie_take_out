@@ -8,6 +8,7 @@ import com.example.reggie_take_out.service.DishFlavorService;
 import com.example.reggie_take_out.service.DishService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,13 +71,6 @@ public class DishController {
         return R.success(null);
     }
 
-
-
-
-
-
-
-
     /**
      * 修改售卖状态
      * @param status
@@ -113,21 +107,8 @@ public class DishController {
     @PostMapping("/status/{status}")
     public R updateDishStatus(@PathVariable("status") Integer status, @RequestParam("ids") List<Long> id){
         log.info("修改菜品的售卖状态：{}",id);
-        LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
-        wrapper.in(Dish::getId,id);
-        Dish dish = new Dish();
-//       如果status为0，表示禁售请求，将status设置为0
-        if (status == 0){
-            dish.setStatus(0);
-            this.dishService.update(dish,wrapper);
-            return R.success(null);
-        }
-//        如果status为1，表示上架请求，将status设置为1
-        dish.setStatus(1);
-        this.dishService.update(dish,wrapper);
-        return R.success(null);
+        return R.success(this.dishService.updateDishStatus(id,status));
     }
-
 
     /**
      * 新增菜品信息
@@ -162,6 +143,60 @@ public class DishController {
         log.info("修改菜品信息{}",dishDto);
         dishService.updateWithFlavor(dishDto);
         return R.success("菜品修改成功");
+    }
+    /**
+     * 根据菜品分类id查询菜品列表
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Dish>> list(Long categoryId){
+        LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Dish::getCategoryId,categoryId);
+        List<Dish> list = dishService.list(wrapper);
+        return R.success(list);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 访问当前Controller下的异常发生处理
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(Exception.class)
+    public R<String> globalhandleException(Exception e) {
+        System.out.println("==============================");
+        System.out.println(e);
+        if (e instanceof DuplicateKeyException){
+            log.error(e.getMessage());
+            return R.error("菜品已存在");
+        }
+        else {
+            log.error(e.getMessage());
+            return R.error("服务器异常");
+        }
     }
 
 }

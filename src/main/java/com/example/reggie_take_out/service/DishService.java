@@ -6,6 +6,8 @@ import com.example.reggie_take_out.dto.DishDto;
 import com.example.reggie_take_out.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author 80954
 * @description 针对表【dish(菜品管理)】的数据库操作Service
@@ -41,4 +43,11 @@ public interface DishService extends IService<Dish> {
      * @param dishDto
      */
     public void updateWithFlavor(DishDto dishDto);
+
+    /**
+     * 修改菜品状态
+     * @param ids
+     * @return
+     */
+    public R<String> updateDishStatus(List<Long> id, Integer status);
 }

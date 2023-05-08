@@ -85,6 +85,22 @@ public class CategoryController {
         return R.success(category);
     }
 
+
+    /**
+     * 新增菜品时，查询所有分类
+     * @param type
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Category>> listCategory(Category category) {
+        log.info("查询所有分类");
+        LambdaQueryWrapper<Category> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(category.getType()!=null,Category::getType,category.getType());
+        wrapper.orderByAsc(Category::getSort)
+                .orderByDesc(Category::getUpdateTime);
+        return R.success(this.categoryService.list(wrapper));
+    }
+
     /**
      * 访问当前Controller下的异常发生处理
      * @param e
@@ -103,20 +119,5 @@ public class CategoryController {
             return R.error("服务器异常");
         }
     }
-    /**
-     * 新增菜品时，查询所有分类
-     * @param type
-     * @return
-     */
-    @GetMapping("/list")
-    public R<List<Category>> listCategory(Category category) {
-        log.info("查询所有分类");
-        LambdaQueryWrapper<Category> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(category.getType()!=null,Category::getType,category.getType());
-        wrapper.orderByAsc(Category::getSort)
-                .orderByDesc(Category::getUpdateTime);
-        return R.success(this.categoryService.list(wrapper));
-    }
-
 }
 
