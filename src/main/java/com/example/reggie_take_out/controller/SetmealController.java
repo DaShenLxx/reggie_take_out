@@ -69,7 +69,7 @@ public class SetmealController {
     @DeleteMapping
     public R deleteSetmeal(@RequestParam("ids") List<Long> ids) {
         log.info("删除套餐：id = {}", ids);
-        return R.success(this.setmealService.deleteSetmeal(ids));
+        return this.setmealService.deleteSetmeal(ids);
     }
 
     /**

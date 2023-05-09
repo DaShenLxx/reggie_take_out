@@ -57,7 +57,7 @@ public interface SetmealService extends IService<Setmeal> {
 
     /**
      * 修改套餐
-     * @param dishDto
+     * @param setmealDto
      */
     public void updateWithFlavor(SetmealDto setmealDto);
 }

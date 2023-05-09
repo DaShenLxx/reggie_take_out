@@ -5,6 +5,7 @@ import com.example.reggie_take_out.common.R;
 import com.example.reggie_take_out.dto.DishDto;
 import com.example.reggie_take_out.entity.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -45,9 +46,13 @@ public interface DishService extends IService<Dish> {
     public void updateWithFlavor(DishDto dishDto);
 
     /**
-     * 修改菜品状态
-     * @param ids
+     * 更新菜品状态
+     * @param id
+     * @param status
      * @return
      */
     public R<String> updateDishStatus(List<Long> id, Integer status);
+
+
+    R<String> deleteDish(List<Long> id);
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.reggie_take_out.common.R;
 import com.example.reggie_take_out.dto.DishDto;
 import com.example.reggie_take_out.entity.Dish;
+import com.example.reggie_take_out.entity.Setmeal;
 import com.example.reggie_take_out.service.DishFlavorService;
 import com.example.reggie_take_out.service.DishService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class DishController {
 
     /**
      * 分页查询所有数据
+     *
      * @param page
      * @param pageSize
      * @param name
@@ -63,125 +65,81 @@ public class DishController {
      * @return
      */
     @DeleteMapping
-    public R deleteDish(@RequestParam("ids") List<Long> id) {
+    public R<String> deleteDish(@RequestParam("ids") List<Long> id) {
         log.info("删除菜品：id = {}", id);
-        LambdaQueryWrapper<Dish> wrapper=new LambdaQueryWrapper<>();
-        wrapper.in(Dish::getId,id);
-        this.dishService.remove(wrapper);
-        return R.success(null);
+        return this.dishService.deleteDish(id);
     }
 
     /**
-     * 修改售卖状态
-     * @param status
-     * @param id
-     * @return
-     */
-   /* @PostMapping("/status/{status}")
-    public R updateDishStatus(@PathVariable("status") Integer status,@RequestParam("ids") Long id){
-        log.info("修改菜品的售卖状态：{}",id);
-        LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Dish::getId,id);
-        Dish dish = new Dish();
-//       如果status为0，表示禁售请求，将status设置为0
-        if (status == 0){
-            dish.setStatus(0);
-            this.dishService.update(dish,wrapper);
-            return R.success(null);
-        }
-//        如果status为1，表示上架请求，将status设置为1
-        dish.setStatus(1);
-        this.dishService.update(dish,wrapper);
-
-
-        return R.success(null);
-    }*/
-
-
-    /**
      * 修改售卖状态(可批量修改)
+     *
      * @param status
      * @param id
      * @return
      */
     @PostMapping("/status/{status}")
-    public R updateDishStatus(@PathVariable("status") Integer status, @RequestParam("ids") List<Long> id){
-        log.info("修改菜品的售卖状态：{}",id);
-        return R.success(this.dishService.updateDishStatus(id,status));
+    public R updateDishStatus(@PathVariable("status") Integer status, @RequestParam("ids") List<Long> id) {
+        log.info("修改菜品的售卖状态：{}", id);
+        return R.success(this.dishService.updateDishStatus(id, status));
     }
 
     /**
      * 新增菜品信息
+     *
      * @param dishDto
      * @return
      */
     @PostMapping
-    public R<String> insertDish(@RequestBody DishDto dishDto){
-        log.info("新增菜品信息：{}",dishDto);
+    public R<String> insertDish(@RequestBody DishDto dishDto) {
+        log.info("新增菜品信息：{}", dishDto);
         this.dishService.saveDish(dishDto);
         return R.success("菜品新增成功");
     }
 
     /**
      * 根据ID查询菜品信息以及对应的口味信息
+     *
      * @param id
      * @return
      */
     @GetMapping("/{id}")
-    public R<DishDto> get(@PathVariable Long id){
+    public R<DishDto> get(@PathVariable Long id) {
         DishDto dishDto = dishService.getByIdWithFlavor(id);
         return R.success(dishDto);
     }
 
     /**
      * 修改菜品
+     *
      * @param dishDto
      * @return R<String>
      */
     @PutMapping
-    public R<String> update(@RequestBody DishDto dishDto){
-        log.info("修改菜品信息{}",dishDto);
+    public R<String> update(@RequestBody DishDto dishDto) {
+        log.info("修改菜品信息{}", dishDto);
         dishService.updateWithFlavor(dishDto);
         return R.success("菜品修改成功");
     }
+
     /**
      * 根据菜品分类id查询菜品列表
+     *
      * @param categoryId
      * @return
      */
     @GetMapping("/list")
-    public R<List<Dish>> list(Long categoryId){
+    public R<List<Dish>> list(Long categoryId) {
         LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Dish::getCategoryId,categoryId);
+        wrapper.eq(Dish::getCategoryId, categoryId);
+        wrapper.eq(Dish::getStatus, 1);
         List<Dish> list = dishService.list(wrapper);
         return R.success(list);
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * 访问当前Controller下的异常发生处理
+     *
      * @param e
      * @return
      */
@@ -189,11 +147,10 @@ public class DishController {
     public R<String> globalhandleException(Exception e) {
         System.out.println("==============================");
         System.out.println(e);
-        if (e instanceof DuplicateKeyException){
+        if (e instanceof DuplicateKeyException) {
             log.error(e.getMessage());
             return R.error("菜品已存在");
-        }
-        else {
+        } else {
             log.error(e.getMessage());
             return R.error("服务器异常");
         }

@@ -97,13 +97,21 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
 
     /**
      * 删除套餐，同时删除套餐所包含的菜品(可批量删除)
-     *
      * @param ids
      * @return
      */
 
     @Override
     public R<String> deleteSetmeal(List<Long> ids) {
+         String msg= null;
+//        判断套餐是否处于上架状态
+        LambdaQueryWrapper<Setmeal> wrapper2 = new LambdaQueryWrapper<>();
+        wrapper2.in(Setmeal::getId, ids);
+        wrapper2.eq(Setmeal::getStatus, 1);
+        if (this.count(wrapper2)>0){
+            return R.error("套餐处于上架状态，无法删除");
+        }
+        else {
 //        删除套餐
         LambdaQueryWrapper<Setmeal> wrapper = new LambdaQueryWrapper<>();
         wrapper.in(Setmeal::getId, ids);
@@ -113,6 +121,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
         wrapper1.in(SetmealDish::getSetmealId, ids);
         this.setmealDishService.remove(wrapper1);
         return R.success("删除成功");
+        }
     }
 
 

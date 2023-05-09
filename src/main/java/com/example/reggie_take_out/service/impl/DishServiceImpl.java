@@ -166,6 +166,28 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         this.update(dish,wrapper);
         return R.success("修改状态成功");
     }
+
+    /**
+     * 删除菜品(可批量删除)
+     * @param id
+     * @return
+     */
+    @Override
+    public R<String> deleteDish(List<Long> id) {
+        //        判断套餐是否处于上架状态
+        LambdaQueryWrapper<Dish> wrapper2 = new LambdaQueryWrapper<>();
+        wrapper2.in(Dish::getId, id);
+        wrapper2.eq(Dish::getStatus, 1);
+        if (this.count(wrapper2)>0){
+            return R.error("菜品处于上架状态，无法删除");
+        }
+        else {
+            LambdaQueryWrapper<Dish> wrapper=new LambdaQueryWrapper<>();
+            wrapper.in(Dish::getId,id);
+            this.remove(wrapper);
+            return R.success("菜品删除成功");
+        }
+    }
 }
 
 
