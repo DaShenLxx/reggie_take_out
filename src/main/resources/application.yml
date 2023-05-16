@@ -23,3 +23,5 @@ mybatis-plus:
 #指定上传文件转存的路径
 reggie:
   path: E:\img\
+#test
+
