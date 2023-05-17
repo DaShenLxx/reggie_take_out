@@ -91,6 +91,7 @@ public class AddressBook implements Serializable {
     /**
      * 创建时间
      */
+//    @JsonFormat设置全局配置(结果时间和数据库时间不一致问题)
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
