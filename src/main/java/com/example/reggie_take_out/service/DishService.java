@@ -53,6 +53,18 @@ public interface DishService extends IService<Dish> {
      */
     public R<String> updateDishStatus(List<Long> id, Integer status);
 
-
+    /**
+     * 删除菜品
+     * @param id
+     * @return
+     */
     R<String> deleteDish(List<Long> id);
+
+    /**
+     * 根据菜品分类id查询菜品列表
+     *
+     * @param dish
+     * @return
+     */
+    public R<List<DishDto>> list(Dish dish);
 }

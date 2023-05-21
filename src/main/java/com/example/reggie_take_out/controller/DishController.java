@@ -10,6 +10,7 @@ import com.example.reggie_take_out.entity.Setmeal;
 import com.example.reggie_take_out.service.CategoryService;
 import com.example.reggie_take_out.service.DishFlavorService;
 import com.example.reggie_take_out.service.DishService;
+import com.example.reggie_take_out.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -54,17 +56,6 @@ public class DishController {
         return dishService.listDish(page, pageSize, name);
     }
 
-    /**
-     * 删除菜品，逻辑删除
-     * @param id
-     * @return
-     */
-    /*@DeleteMapping
-    public R deleteDish(@RequestParam("ids") Long id) {
-        log.info("删除菜品：id = {}", id);
-        this.dishService.removeById(id);
-        return R.success(null);
-    }*/
 
 
     /**
@@ -135,44 +126,9 @@ public class DishController {
      * @param dish
      * @return
      */
-    /*@GetMapping("/list")
-    public R<List<Dish>> list(Dish dish) {
-        LambdaQueryWrapper<Dish> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Dish::getCategoryId, dish.getCategoryId());
-        wrapper.eq(Dish::getStatus, 1);
-        List<Dish> list = dishService.list(wrapper);
-        return R.success(list);
-    }*/
-
     @GetMapping("/list")
     public R<List<DishDto>> list(Dish dish){
-        // 构造条件
-        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper();
-        queryWrapper.eq(Dish::getStatus, 1);
-        queryWrapper.eq(dish.getCategoryId()!=null, Dish::getCategoryId, dish.getCategoryId());
-        // 添加排序条件
-        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
-        List<Dish> dishList = dishService.list(queryWrapper);
-
-        List<DishDto> dishDtoList = dishList.stream().map((item)->{
-            DishDto dishDto = new DishDto();
-            BeanUtils.copyProperties(item,dishDto);
-            // 获取categoryId
-            Long categoryId = item.getCategoryId();
-            // 给categoryName赋值
-            Category category = categoryService.getById(categoryId);
-            if(category!=null){
-                dishDto.setCategoryName(category.getName());
-            }
-            // 当前菜品ID
-            Long dishId = item.getId();
-            LambdaQueryWrapper<DishFlavor> dishFlavorQueryWrapper= new LambdaQueryWrapper<>();
-            dishFlavorQueryWrapper.eq(DishFlavor::getDishId,dishId);
-            List<DishFlavor> dishFlavorList = dishFlavorService.list(dishFlavorQueryWrapper);
-            dishDto.setFlavors(dishFlavorList);
-            return dishDto;
-        }).collect(Collectors.toList());
-        return R.success(dishDtoList);
+        return this.dishService.list(dish);
     }
 
     /**

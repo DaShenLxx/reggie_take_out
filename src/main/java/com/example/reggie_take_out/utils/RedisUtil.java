@@ -78,7 +78,19 @@ public final class RedisUtil {
             }
         }
     }
-
+    /**
+     * 批量删除key
+     * @param keys
+     */
+    public void del(Collection<String> keys) {
+        redisTemplate.delete(keys);
+    }
+    /**
+     * 获取所有key
+     */
+    public Set<String> keys(String pattern) {
+        return redisTemplate.keys(pattern);
+    }
 
     // ============================String=============================
 
