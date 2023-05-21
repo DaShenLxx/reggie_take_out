@@ -1,4 +1,9 @@
 HELP.md
+.git
+rebel.xml
+logs
+.DS_Store
+offline_user.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

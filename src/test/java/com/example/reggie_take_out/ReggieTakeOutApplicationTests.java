@@ -15,7 +15,7 @@ import java.util.Map;
 @SpringBootTest
 class ReggieTakeOutApplicationTests {
 
-            @Test
+
             void sendSms() throws ClientException {
 
                 // 指定地域名称 短信API的就是 cn-hangzhou 不能改变  后边填写您的  accessKey 和 accessKey Secret
