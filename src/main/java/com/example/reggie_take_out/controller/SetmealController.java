@@ -14,6 +14,7 @@ import com.example.reggie_take_out.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,6 +116,7 @@ public class SetmealController {
      * @param setmeal
      * @return
      */
+    @Cacheable(value = "setmealCache",key = "#setmeal.categoryId+'_'+#setmeal.status")
     @GetMapping("/list")
     public R<List<Setmeal>> list(Setmeal setmeal){
         // 构造查询条件

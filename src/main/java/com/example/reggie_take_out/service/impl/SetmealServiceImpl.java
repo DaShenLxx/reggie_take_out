@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +80,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
      * @param setmealDto
      * @return
      */
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R saveSetmeal(SetmealDto setmealDto) {
         //        保存套餐
         this.save(setmealDto);
@@ -101,6 +103,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal>
      * @return
      */
 
+    @CacheEvict(value = "setmealCache",allEntries = true)
     @Override
     public R<String> deleteSetmeal(List<Long> ids) {
          String msg= null;
