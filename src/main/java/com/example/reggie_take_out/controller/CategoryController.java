@@ -8,6 +8,8 @@ import com.example.reggie_take_out.entity.Employee;
 import com.example.reggie_take_out.service.CategoryService;
 import com.example.reggie_take_out.service.DishService;
 import com.example.reggie_take_out.service.SetmealService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -27,6 +29,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("category")
+@Api(tags = "菜品及套餐分类接口")
 public class CategoryController {
     /**
      * 服务对象
@@ -40,6 +43,7 @@ public class CategoryController {
      * @param page 分页对象
      * @return 所有数据
      */
+    @ApiOperation(value = "类别信息分页查询", notes = "类别信息分页查询")
     @GetMapping("/page")
     public R<Page> listCategory(Integer page,
                                 Integer pageSize,
@@ -88,7 +92,7 @@ public class CategoryController {
 
     /**
      * 新增菜品时，查询所有分类
-     * @param type
+     * @param category
      * @return
      */
     @GetMapping("/list")

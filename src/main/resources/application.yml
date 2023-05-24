@@ -87,8 +87,8 @@ mybatis-plus:
       id-type: ASSIGN_ID  #默认的ID生成策略为雪花算法生成UUID
 #指定上传文件转存的路径
 reggie:
-#  path: /usr/src/img/
-   path: E:/img/
+  path: /usr/src/img/
+#   path: E:/img/
 
 
 
