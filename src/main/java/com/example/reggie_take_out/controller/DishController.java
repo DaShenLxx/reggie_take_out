@@ -11,6 +11,10 @@ import com.example.reggie_take_out.service.CategoryService;
 import com.example.reggie_take_out.service.DishFlavorService;
 import com.example.reggie_take_out.service.DishService;
 import com.example.reggie_take_out.utils.RedisUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,7 @@ import java.util.stream.Collectors;
  * @author makejava
  * @since 2023-05-05 22:19:10
  */
+@Api(tags = "菜品管理接口")
 @Slf4j
 @RestController
 @RequestMapping("dish")
@@ -50,6 +55,7 @@ public class DishController {
      * @param name
      * @return
      */
+
     @GetMapping("/page")
     public R listDish(Integer page, Integer pageSize, String name) {
         log.info("菜品信息分页查询：page = {}, pageSize = {}, name = {}", page, pageSize, name);
@@ -63,6 +69,7 @@ public class DishController {
      * @param id
      * @return
      */
+
     @DeleteMapping
     public R<String> deleteDish(@RequestParam("ids") List<Long> id) {
         log.info("删除菜品：id = {}", id);
@@ -76,6 +83,7 @@ public class DishController {
      * @param id
      * @return
      */
+
     @PostMapping("/status/{status}")
     public R updateDishStatus(@PathVariable("status") Integer status, @RequestParam("ids") List<Long> id) {
         log.info("修改菜品的售卖状态：{}", id);
@@ -88,6 +96,7 @@ public class DishController {
      * @param dishDto
      * @return
      */
+
     @PostMapping
     public R<String> insertDish(@RequestBody DishDto dishDto) {
         log.info("新增菜品信息：{}", dishDto);
@@ -101,6 +110,7 @@ public class DishController {
      * @param id
      * @return
      */
+
     @GetMapping("/{id}")
     public R<DishDto> get(@PathVariable Long id) {
         DishDto dishDto = dishService.getByIdWithFlavor(id);
@@ -113,6 +123,7 @@ public class DishController {
      * @param dishDto
      * @return R<String>
      */
+
     @PutMapping
     public R<String> update(@RequestBody DishDto dishDto) {
         log.info("修改菜品信息{}", dishDto);
@@ -126,6 +137,7 @@ public class DishController {
      * @param dish
      * @return
      */
+
     @GetMapping("/list")
     public R<List<DishDto>> list(Dish dish){
         return this.dishService.list(dish);
@@ -137,6 +149,7 @@ public class DishController {
      * @param e
      * @return
      */
+
     @ExceptionHandler(Exception.class)
     public R<String> globalhandleException(Exception e) {
         System.out.println("==============================");
@@ -149,10 +162,6 @@ public class DishController {
             return R.error("服务器异常");
         }
     }
-
-
-
-
 
 }
 

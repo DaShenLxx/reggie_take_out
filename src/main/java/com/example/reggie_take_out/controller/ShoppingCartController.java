@@ -5,6 +5,9 @@ import com.example.reggie_take_out.common.BaseContext;
 import com.example.reggie_take_out.common.R;
 import com.example.reggie_take_out.entity.ShoppingCart;
 import com.example.reggie_take_out.service.ShoppingCartService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,7 @@ import java.util.List;
  * @author makejava
  * @since 2023-05-12 16:52:40
  */
+@Api(tags = "购物车(ShoppingCart)表控制层")
 @RestController
 @RequestMapping("shoppingCart")
 public class ShoppingCartController {
@@ -29,7 +33,13 @@ public class ShoppingCartController {
     @Autowired
     private HttpSession session;
 
-    //添加到购物车(在购物车点击加号也是这个接口)
+
+    /**
+     * 添加到购物车(在购物车点击加号也是这个接口)
+     * @param shoppingCart
+     * @return
+     */
+
     @PostMapping("add")
     public R<ShoppingCart> add(@RequestBody ShoppingCart shoppingCart) {
         //获取当前用户的id
@@ -63,7 +73,12 @@ public class ShoppingCartController {
 
     }
 
-//    查看购物车
+
+    /**
+     * 查看购物车
+     * @return
+     */
+
     @GetMapping("list")
     public R<List<ShoppingCart>> shoppinglist() {
         Long userId = BaseContext.getCurrentId();
@@ -71,7 +86,6 @@ public class ShoppingCartController {
         wrapper.eq(ShoppingCart::getUserId, userId);
         wrapper.orderByAsc(ShoppingCart::getCreateTime);
 
-//
 //        查询当前用户的购物车中数量大于0的商品
         wrapper.gt(ShoppingCart::getNumber, 0);
 //
@@ -80,7 +94,12 @@ public class ShoppingCartController {
     }
 
 
-//    减少商品，在购物车点击减号
+    /**
+     * 减少商品，在购物车点击减号
+     * @param shoppingCart
+     * @return
+     */
+
     @PostMapping("sub")
     public R<String> reduce(@RequestBody ShoppingCart shoppingCart) {
         //获取当前用户的id
@@ -104,6 +123,7 @@ public class ShoppingCartController {
      * 清空购物车
      * @return
      */
+
     @DeleteMapping("/clean")
     public R<String> clean(){
 

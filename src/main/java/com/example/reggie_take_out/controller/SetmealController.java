@@ -11,6 +11,10 @@ import com.example.reggie_take_out.entity.Setmeal;
 import com.example.reggie_take_out.entity.SetmealDish;
 import com.example.reggie_take_out.service.SetmealDishService;
 import com.example.reggie_take_out.service.SetmealService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,7 @@ import java.util.List;
  * @author makejava
  * @since 2023-05-08 11:22:34
  */
+@Api(tags = "套餐(Setmeal)表控制层")
 @Slf4j
 @RestController
 @RequestMapping("setmeal")
@@ -57,6 +62,7 @@ public class SetmealController {
     /**
      * 上传子套餐
      */
+
     @PostMapping
     public R saveSetmeal(@RequestBody SetmealDto setmealDto) {
         log.info("上传子套餐：setmeal = {}", setmealDto);
@@ -67,6 +73,7 @@ public class SetmealController {
     /**
      * 删除套餐(可批量删除)
      */
+
     @DeleteMapping
     public R deleteSetmeal(@RequestParam("ids") List<Long> ids) {
         log.info("删除套餐：id = {}", ids);
@@ -80,6 +87,7 @@ public class SetmealController {
      * @param status
      * @return
      */
+
     @PostMapping("/status/{status}")
     public R updateStatus(@RequestParam("ids") List<Long> ids,
                           @PathVariable("status") Integer status) {
@@ -92,6 +100,7 @@ public class SetmealController {
      * @param id
      * @return
      */
+
     @GetMapping("/{id}")
     public R<SetmealDto> getSetmeal(@PathVariable("id") Long id) {
         log.info("修改套餐反查：id = {}", id);
@@ -103,6 +112,7 @@ public class SetmealController {
      * @param setmealDto
      * @return
      */
+
     @PutMapping
     public R<String> update(@RequestBody SetmealDto setmealDto) {
         log.info("修改菜品信息{}",setmealDto);
@@ -116,6 +126,7 @@ public class SetmealController {
      * @param setmeal
      * @return
      */
+
     @Cacheable(value = "setmealCache",key = "#setmeal.categoryId+'_'+#setmeal.status")
     @GetMapping("/list")
     public R<List<Setmeal>> list(Setmeal setmeal){

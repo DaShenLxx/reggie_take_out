@@ -2,16 +2,16 @@ package com.example.reggie_take_out.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import com.example.reggie_take_out.common.BaseContext;
 import com.example.reggie_take_out.common.R;
 import com.example.reggie_take_out.entity.AddressBook;
-import com.example.reggie_take_out.entity.User;
 import com.example.reggie_take_out.service.AddressBookService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -20,6 +20,7 @@ import java.util.List;
 /**
  * 地址簿管理
  */
+@Api(tags = "地址簿管理")
 @Slf4j
 @RestController
 @RequestMapping("/addressBook")
@@ -33,6 +34,8 @@ public class AddressBookController {
     /**
      * 新增
      */
+    @ApiOperation(value = "新增地址", notes = "新增地址")
+    @ApiImplicitParam(name = "addressBook", value = "地址簿实体类", required = true, dataType = "AddressBook")
     @PostMapping
     public R<AddressBook> save(@RequestBody AddressBook addressBook) {
 //        addressBook.setUserId(BaseContext.getCurrentId());
@@ -43,14 +46,17 @@ public class AddressBookController {
     }
 
     /**
-     *修改地址
+     * 修改地址
+     *
      * @param addressBook
      * @return
      */
+    @ApiOperation(value = "修改地址", notes = "修改地址")
+    @ApiImplicitParam(name = "addressBook", value = "地址簿实体类", required = true, dataType = "AddressBook")
     @PutMapping
     public R<String> update(@RequestBody AddressBook addressBook) {
 //        addressBook.setUserId(BaseContext.getCurrentId());
-        if (addressBook==null){
+        if (addressBook == null) {
             return R.error("请求异常");
         }
         addressBookService.updateById(addressBook);
@@ -59,25 +65,29 @@ public class AddressBookController {
 
     /**
      * 删除地址
+     *
      * @param id
      * @return
      */
+    @ApiOperation(value = "删除地址", notes = "删除地址")
+    @ApiImplicitParam(name = "ids", value = "地址簿id", required = true, dataType = "Long")
     @DeleteMapping
-    public R<String> delete(@RequestParam("ids")Long id){
-        if (id==null){
+    public R<String> delete(@RequestParam("ids") Long id) {
+        if (id == null) {
             return R.error("请求异常");
         }
-        LambdaQueryWrapper<AddressBook> queryWrapper=new LambdaQueryWrapper<>();
-        queryWrapper.eq(AddressBook::getId,id).eq(AddressBook::getUserId,BaseContext.getCurrentId());
+        LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AddressBook::getId, id).eq(AddressBook::getUserId, BaseContext.getCurrentId());
         addressBookService.remove(queryWrapper);
         return R.success("删除地址成功");
     }
 
 
-
     /**
      * 设置默认地址
      */
+    @ApiOperation(value = "设置默认地址", notes = "设置默认地址")
+    @ApiImplicitParam(name = "addressBook", value = "地址簿实体类", required = true, dataType = "AddressBook")
     @PutMapping("default")
     public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
         log.info("addressBook:{}", addressBook);
@@ -97,6 +107,8 @@ public class AddressBookController {
     /**
      * 根据id查询地址
      */
+    @ApiOperation(value = "根据id查询地址", notes = "根据id查询地址")
+    @ApiImplicitParam(name = "id", value = "地址簿id", required = true, dataType = "Long")
     @GetMapping("/{id}")
     public R get(@PathVariable Long id) {
         AddressBook addressBook = addressBookService.getById(id);
@@ -110,6 +122,7 @@ public class AddressBookController {
     /**
      * 查询默认地址
      */
+    @ApiOperation(value = "查询默认地址", notes = "查询默认地址")
     @GetMapping("default")
     public R<AddressBook> getDefault() {
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
@@ -130,8 +143,9 @@ public class AddressBookController {
     /**
      * 查询指定用户的全部地址
      */
+    @ApiOperation(value = "查询指定用户的全部地址", notes = "查询指定用户的全部地址")
     @GetMapping("/list")
-    public R<List<AddressBook>> list(AddressBook addressBook) {
+    public R<List<AddressBook>> list( AddressBook addressBook) {
 //        addressBook.setUserId(BaseContext.getCurrentId());
         addressBook.setUserId((Long) this.httpSession.getAttribute("userid"));
         log.info("addressBook:{}", addressBook);

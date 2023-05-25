@@ -11,15 +11,16 @@ spring:
 ##      url: jdbc:mysql://localhost:3306/reggie?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
 #      username: root
 #      password: 123456
-#      password: DaShenLxx1215....  aliyun服务器
-#      password: root  本机192.168.85.128 Linux服务器
+##      password: DaShenLxx1215....  aliyun服务器
+##      password: root  本机192.168.85.128 Linux服务器
 
   # ==== 项目优化 ====
   # Redis相关配置
   redis:
+#      host: 192.168.85.128
       host: localhost
       port: 6379
-      #password: 123456
+      password: 123456
       database: 0 #操作的是0号数据库
       jedis:
       #Redis连接池配置
@@ -30,6 +31,7 @@ spring:
             min-idle: 0 #连接池中的最小空闲连接
         lettuce:
             shutdown-timeout: 0ms
+      timeout: 5000ms #连接超时时间（毫秒）
   cache:
     redis:
       time-to-live: 300000ms
@@ -67,6 +69,7 @@ spring:
 #       允许bean定义覆盖
   main:
     allow-bean-definition-overriding: true
+
 #   解决结果时间和数据库时间不一致问题，也可以在实体类上加上注解@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")，但是这样每个实体类都要加上注解，不太方便，但是二者并不冲突
 #    jackson:
 #      date-format: yyyy-MM-dd HH:mm:ss

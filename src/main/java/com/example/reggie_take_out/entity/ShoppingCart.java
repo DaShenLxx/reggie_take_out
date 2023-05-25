@@ -7,12 +7,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * 购物车
  * @TableName shopping_cart
  */
+@ApiModel(value = "购物车")
 @TableName(value ="shopping_cart")
 @Data
 public class ShoppingCart implements Serializable {

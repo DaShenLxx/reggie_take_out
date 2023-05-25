@@ -7,12 +7,15 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * 用户信息
  * @TableName user
  */
+@ApiModel(value = "用户信息")
 @TableName(value ="user")
 @Data
 public class User implements Serializable {

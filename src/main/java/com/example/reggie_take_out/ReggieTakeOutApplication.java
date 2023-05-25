@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableTransactionManagement
 @ServletComponentScan //扫描Servlet组件,如@WebFilter
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableCaching //开启srpingcache缓存
 @MapperScan("com.example.reggie_take_out.mapper")
+@EnableWebMvc
 public class ReggieTakeOutApplication {
 
     public static void main(String[] args) {

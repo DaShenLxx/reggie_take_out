@@ -8,6 +8,9 @@ import com.example.reggie_take_out.service.UserService;
 import com.example.reggie_take_out.utils.RedisUtil;
 import com.example.reggie_take_out.utils.SMSUtils;
 import com.example.reggie_take_out.utils.ValidateCodeUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import java.util.Map;
  * @author makejava
  * @since 2023-05-11 16:35:54
  */
+@Api(tags = "用户信息(User)表控制层")
 @Slf4j
 @RestController
 @RequestMapping("user")
@@ -48,6 +52,7 @@ public class UserController {
      * @param session
      * @return
      */
+
     @PostMapping("/sendMsg")
     public R<String> sendMsg(@RequestBody User user, HttpSession session) {
         // 获取手机号
@@ -82,6 +87,7 @@ public class UserController {
      * @param session
      * @return
      */
+
     @PostMapping("/login")
     public R<User> login(@RequestBody Map map, HttpSession session) {
         log.info(map.toString());
@@ -127,7 +133,12 @@ public class UserController {
         return R.error("登录失败,验证码有误");
     }
 
-    //    退出登录
+    /**
+     * 移动端用户退出登录
+     * @param request
+     * @return
+     */
+
     @PostMapping("/loginout")
     public R<String> loginout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");

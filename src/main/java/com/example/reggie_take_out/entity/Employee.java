@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
 
@@ -13,6 +15,7 @@ import lombok.Getter;
  * 员工信息
  * @TableName employee
  */
+@ApiModel(value = "员工信息")
 @TableName(value ="employee")
 @Data
 public class Employee implements Serializable {

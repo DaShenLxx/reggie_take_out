@@ -8,12 +8,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * 订单明细表
  * @TableName order_detail
  */
+@ApiModel(value = "订单明细表")
 @TableName(value ="order_detail")
 @Data
 public class OrderDetail implements Serializable {

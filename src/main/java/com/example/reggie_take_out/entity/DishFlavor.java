@@ -6,12 +6,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * 菜品口味关系表
  * @TableName dish_flavor
  */
+@ApiModel(value = "菜品口味关系表")
 @TableName(value ="dish_flavor")
 @Data
 public class DishFlavor implements Serializable {

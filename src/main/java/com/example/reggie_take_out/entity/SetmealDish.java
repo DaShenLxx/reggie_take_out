@@ -7,12 +7,15 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
  * 套餐菜品关系
  * @TableName setmeal_dish
  */
+@ApiModel(value = "套餐菜品关系")
 @TableName(value ="setmeal_dish")
 @Data
 public class SetmealDish implements Serializable {

@@ -2,6 +2,9 @@ package com.example.reggie_take_out.controller;
 
 
 import com.example.reggie_take_out.common.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +24,7 @@ import java.util.UUID;
  * 公共控制器
  * 文件上传和下载
  */
+@Api(tags = "公共接口")
 @Slf4j
 @RestController
 @RequestMapping("/common")
@@ -31,9 +35,11 @@ public class CommonController {
 
     /**
      * 上传图片
+     *
      * @param file
      * @return
      */
+
     @PostMapping("/upload")
 //    此处形参名必须和前端传过来的参数名一致name="file"
     public R upload(MultipartFile file) {
@@ -55,7 +61,7 @@ public class CommonController {
         if (!dir.exists()) {
             dir.mkdir();
         }
-        System.out.println(this.path+fileName);
+        System.out.println(this.path + fileName);
         try {
             //        将临时文件转存到指定位置
             file.transferTo(new File(path + fileName));
@@ -67,9 +73,11 @@ public class CommonController {
 
     /**
      * 文件下载
+     *
      * @param name     文件名
      * @param response 文件数据
      */
+
     @GetMapping("/download")
     public void downLoad(String name, HttpServletResponse response) {
         try {
